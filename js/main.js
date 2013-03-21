@@ -182,13 +182,11 @@ var Lumi = {
 };
 $(function() {
     var path = window.location.pathname.substring(1);
-    if(path && path.indexOf('p/') !== -1) { $('#post').empty(); }
-    if(!path) { Lumi.insertTumblrButton(); }
     Lumi.resize();
+    Lumi.insertTumblrButton();
     $.ajax({url: '/content/posts.json', dataType: 'json'})
     .done(function(data) {
         Lumi.init(data, path);
-        if(path && path.indexOf('p/') !== -1) { Lumi.route(path); }
     })
     .fail(function() {});
     $(document).on('click', "a[href^='/p']", function(e) {
