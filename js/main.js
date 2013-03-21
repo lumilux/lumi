@@ -140,9 +140,11 @@ var Lumi = {
     render: function(slug) {
         this.index = slug ? this.postsBySlug[slug].index : 0;
         var $post = $('#post'),
-            post = this.posts[this.index];
+            post = this.posts[this.index],
+            root = 'http://' + window.location.host + '/';
         document.title = post.title + " - Lumilux";
         window.scrollTo(0, 0);
+        $('meta[name^="twitter"]').remove();
         $post.empty();
         if(!this.isMobile) {
             this.imgObserver = this.onAddChildren('#post', this.resize);

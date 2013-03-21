@@ -1,3 +1,4 @@
+from itertools import tee, islice, chain, izip
 import os
 import re
 import simplejson as json
@@ -17,6 +18,7 @@ INDEX_PATH = rp(ap(join(CWD, '..', 'index.html')))
 ABOUT_PATH = rp(ap(join(CWD, '..', 'about.html')))
 ARCHIVES_PATH = rp(ap(join(CWD, '..', 'archives.html')))
 TEMPLATES_DIR = rp(ap(join(CWD, 'templates')))
+P_DIR = rp(ap(join(CWD, '../p/')))
 
 SOURCES = {'DIRECT': 'd',
            'TUMBLR': 'tu',
@@ -30,6 +32,12 @@ def date_format(value, format='%Y.%m.%d'):
 env.filters['date_format'] = date_format
 
 connect('lumi')
+
+def prev_and_next(it):
+    prevs, items, nexts = tee(it, 3)
+    prevs = chain([None], prevs)
+    nexts = chain(islice(nexts, 1, None), [None])
+    return izip(prevs, items, nexts)
 
 def create_photo(file_path):
     photo_path, width, height = image_utils.fit_and_save(file_path)
@@ -65,6 +73,22 @@ def refresh():
             posts.append(post.as_dict())
         json.dump(posts, f)
 
+def generate_post_pages():
+    posts = Post.objects.order_by('-date')
+    for next, p, prev in prev_and_next(posts):
+        title, slug, date, photos = p.title, p.slug, p.date, p.photos
+        prev_path = '/p/' + prev.slug if prev else None
+        next_path = '/p/' + next.slug if next else None
+        try:
+            tags = p.tags
+        except AttributeError:
+            tags = None
+
+        page_template = env.get_template('index.html')
+        page = page_template.render(title=title, slug=slug, date=date, photos=photos, tags=tags, prev_path=prev_path, next_path=next_path).encode('utf-8')
+        with open(rp(ap(join(P_DIR, slug + '.html'))), 'w') as f:
+            f.write(page)
+
 def generate():
     posts = Post.objects.order_by('-date')[:2]
     title, slug, date, photos = posts[0].title, posts[0].slug, posts[0].date, posts[0].photos
@@ -89,6 +113,8 @@ def generate():
     archives_page = archives_template.render(posts=all_posts).encode('utf-8')
     with open(ARCHIVES_PATH, 'w') as f:
         f.write(archives_page)
+
+    generate_post_pages()
 
 def delete_last():
     post = Post.objects.order_by('-date')[0]

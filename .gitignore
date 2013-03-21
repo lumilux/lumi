@@ -43,3 +43,5 @@ content/
 app/keys.py
 /*.html
 *.json
+p/
+robots.txt

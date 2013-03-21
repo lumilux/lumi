@@ -37,6 +37,5 @@ lumi
 ### todo
 * generate atom/rss feed
 * editing and deleting posts in admin
-* generate static pages for all posts
 * post from tumblr
 * large nav click targets for mobile

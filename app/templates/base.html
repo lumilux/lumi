@@ -6,6 +6,7 @@
     <title>{{ title }} - Lumilux</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block meta %}{% endblock %}
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/main.css">
   </head>
@@ -31,7 +32,7 @@
           <li{{ ' class="current"' if page == 'archives' else '' }}><a href="/archives">Archives</a></li>
         </ul>
       </nav>
-      <span id="copyright">&copy; 2005-2013 Hans E Hyttinen</span>
+      <span id="copyright">&copy; 2005-2013 <a href="https://twitter.com/lumilux">Hans E Hyttinen</a></span>
     </footer>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>

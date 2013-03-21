@@ -1,5 +1,14 @@
 {% extends 'base.html' %}
 
+{% block meta %}
+  <meta name="twitter:card" content="photo">
+  <meta name="twitter:creator" content="@Lumilux">
+  <meta name="twitter:title" content="{{ title }}">
+  <meta name="twitter:image" content="http://lumilux.org/{{ photos[0].image_path }}">
+  <meta name="twitter:image:width" content="{{ photos[0].width }}">
+  <meta name="twitter:image:height" content="{{ photos[0].height }}">
+{% endblock %}
+
 {% block content %}
   {% for photo in photos %}
   <img src="/{{ photo.image_path }}" />
