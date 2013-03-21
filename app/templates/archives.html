@@ -1,0 +1,13 @@
+{% set title = "Archives" %}
+{% set page = "archives" %}
+{% extends 'base.html' %}
+
+{% block content %}
+  <dl id="thumbnails">
+  {% for post in posts %}
+    <dt><a href="/p/{{ post.slug }}">{{ post.title }}</a><time pubdate>{{ post.date|date_format }}</time></dt>
+    <dd><a href="/p/{{ post.slug }}">{% for photo in post.photos %}<img src="/{{ photo.thumbnail_path }}" />{% endfor %}
+    </a></dd>
+  {% endfor %}
+  </dl>
+{% endblock %}

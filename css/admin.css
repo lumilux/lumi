@@ -1,0 +1,93 @@
+body {
+    width: 330px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 50px;
+    background-color: #fdfdfd;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#photo-dropzone {
+    min-height: 374px;
+    border-radius: 5px;
+    border: 1px solid #444;
+}
+
+.default.message {
+    font-style: italic;
+    font-size: 22px;
+    color: #666;
+    font-weight: 100;
+    margin-top: 158px;
+    pointer-events: none;
+}
+
+input {
+    max-width: 302px;
+    font-size: 30px;
+    padding: 8px 12px;
+    margin-top: 20px;
+    border-radius: 5px;
+    color: #333;
+    border: 1px solid #444;
+    box-shadow: inset 1px 1px 3px #aaa;
+}
+
+button {
+    width: 330px;
+    margin-top: 20px;
+    padding: 2px 0 0 0;
+    line-height: 60px;
+    font-size: 22px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    background-color: #666;
+    background: -webkit-linear-gradient(top, #45484d 0%,#000000 100%);
+    color: #eee;
+    text-shadow: -1px -1px 2px #000, 1px 1px 1px rgba(255,255,255,0.25);
+    border: 1px solid #444;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+button:active {
+    padding: 4px 0 0 2px;
+    line-height: 58px;
+    background: -webkit-linear-gradient(top, #000000 0%,#45484d 100%);
+}
+
+.success a {
+    font-size: 42px;
+    color: #222;
+    font-weight: 900;
+    line-height: 40px;
+}
+
+#logout {
+    display: block;
+    padding: 4px 8px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #333;
+    opacity: 0.5;
+    font-size: 15px;
+    text-decoration: none;
+    border-radius: 0 0 0 6px;
+}
+#logout:hover {
+    opacity: 1.0;
+    background-color: #222;
+    color: #fff;
+}
+
+.disabled {
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+.no-events {
+    pointer-events: none;
+}

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/dropzone.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+  <body{{ 'class="' + className + '"' if className}}>
+    {% block content %}{% endblock %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
+    <script src="/js/vendor/underscore-min.js"></script>
+    <script src="/js/vendor/dropzone.js"></script>
+    <script src="/js/admin.js"></script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% for photo in photos %}
+  <img src="/{{ photo.image_path }}" />
+  {% endfor %}
+{% endblock %}
+
+{% block post_nav %}
+  <nav>
+    <ul>{% if prev_path %}
+      <li><a href="{{ prev_path }}" id="prev">&#x2190;</a></li>{% endif %}{% if next_path %}
+      <li><a href="{{ next_path }}" id="next">&#x2192;</a></li>{% endif %}
+    </ul>
+  </nav>
+{% endblock %}
+
+{% block date %}
+<time pubdate id="date">{{ date|date_format }}</time><span id="share"{{ ' data-slug="{0}"'.format(slug) if slug else '' }}{{ ' data-tags="{0}"'.format(', '.join(tags)) if tags else '' }}></span>
+{% endblock %}

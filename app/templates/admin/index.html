@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Publish{% endblock %}
+{% block content %}
+<h1>Lumi Admin</h2>
+<p id="error"></p>
+<div id="photo-dropzone" class="dropzone"></div>
+<form id="publish-post" action="#">
+  <input id="title" type="text" name="title" placeholder="Title" required />
+  <input id="tags" type="text" name="tags" placeholder="photography" />
+  <button type="submit">Publish post</button>
+</form>
+<a href="/admin/logout" id="logout">Log out</a>
+{% endblock %}

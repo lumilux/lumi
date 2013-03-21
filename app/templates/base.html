@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{{ title }} - Lumilux</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body{{ ' class="' + page + '"' if page else '' }}>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+
+    <article id="post">
+    {% block content %}{% endblock %}
+    </article>
+    <header>
+      <h1><a href="/" class="ir">Lumilux</a></h1>
+      {% block post_nav %}{% endblock %}
+      <span id="info">
+        <h2 id="title">{{ title }}</h2>{% block date %}{% endblock %}
+      </span>
+    </header>
+    <footer>
+      <nav>
+        <ul>
+          <li{{ ' class="current"' if page == 'about' else '' }}><a href="/about">About</a></li>
+          <li{{ ' class="current"' if page == 'archives' else '' }}><a href="/archives">Archives</a></li>
+        </ul>
+      </nav>
+      <span id="copyright">&copy; 2005-2013 Hans E Hyttinen</span>
+    </footer>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script>window._ || document.write('<script src="/js/vendor/underscore-min.js"><\/script>')</script>
+    <script src="/js/vendor/jquery.imagesloaded.min.js" async></script>
+    <script src="/js/main.min.js" async></script>
+  </body>
+</html>
