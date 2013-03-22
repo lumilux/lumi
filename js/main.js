@@ -183,7 +183,6 @@ var Lumi = {
 $(function() {
     var path = window.location.pathname.substring(1);
     if(path === 'archives') {
-        //$('#post').append('<noscript><img src="http://lumilux.org/img/thumb/604.jpg" /></noscript>');
         $('#post dd').lazyload({
             'threshold': 600,
             'onAppear': function(loadOriginalImage) {
@@ -203,8 +202,9 @@ $(function() {
                 $images.each(loadOriginalImage);
             }
         });
+        return;
     }
-    if(path.indexOf('p/') === -1) {
+    if(path && path.indexOf('p/') === -1) {
         return;
     }
     Lumi.resize();
