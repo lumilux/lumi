@@ -182,6 +182,31 @@ var Lumi = {
 };
 $(function() {
     var path = window.location.pathname.substring(1);
+    if(path === 'archives') {
+        //$('#post').append('<noscript><img src="http://lumilux.org/img/thumb/604.jpg" /></noscript>');
+        $('#post dd').lazyload({
+            'threshold': 600,
+            'onAppear': function(loadOriginalImage) {
+                var $noscript = $(this).find('noscript'),
+                    noscript = $noscript[0],
+                    imagesText = noscript.innerText.replace(/src=/g, 'data-original='),
+                    $images = $(imagesText);
+                $images.each(function() {
+                    var $this = $(this);
+                    $this.attr('width', 100)
+                         .attr('height', 100)
+                         .attr('src', '/img/g.gif')
+                         .addClass('lazy-image');
+                });
+                $(this).append($images);
+                $noscript.remove();
+                $images.each(loadOriginalImage);
+            }
+        });
+    }
+    if(path.indexOf('p/') === -1) {
+        return;
+    }
     Lumi.resize();
     Lumi.insertTumblrButton();
     $.ajax({url: '/content/posts.json', dataType: 'json'})

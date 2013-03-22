@@ -121,6 +121,8 @@ body:not(.archives) article img {
 #thumbnails dd {
     float: left;
     clear: right;
+    height: 101px;
+    min-width: 101px;
 }
 #thumbnails img {
     outline: none;
@@ -410,6 +412,9 @@ footer li:first-child a {
     }
     #info {
         padding-top: 10px;
+    }
+    .tumblr-button {
+        margin-left: 10px;
     }
     h2, time {
         float: left;

@@ -6,8 +6,11 @@
   <dl id="thumbnails">
   {% for post in posts %}
     <dt><a href="/p/{{ post.slug }}">{{ post.title }}</a><time pubdate>{{ post.date|date_format }}</time></dt>
-    <dd><a href="/p/{{ post.slug }}">{% for photo in post.photos %}<img src="/{{ photo.thumbnail_path }}" />{% endfor %}
-    </a></dd>
+    <dd><a href="/p/{{ post.slug }}"><noscript>{% for photo in post.photos %}<img src="/{{ photo.thumbnail_path }}" />{% endfor %}</noscript></a></dd>
   {% endfor %}
   </dl>
+{% endblock %}
+
+{% block js %}
+    <script src="/js/vendor/jquery.lazyload.min.js"></script>
 {% endblock %}
