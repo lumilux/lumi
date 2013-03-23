@@ -86,8 +86,21 @@ body:not(.archives) article img {
 }
 .about article li {
     color: #ddd;
+}
+.comrades {
+    padding: 0;
+}
+.comrades li {
     float: none;
     white-space: nowrap;
+    display: inline;
+}
+.featured {
+    list-style-type: none;
+    padding: 0;
+}
+.featured li {
+    margin-bottom: 10px;
 }
 #thumbnails {
     margin: 0;
@@ -101,6 +114,7 @@ body:not(.archives) article img {
     font-size: 36px;
     line-height: 100px;
     position: relative;
+    margin-right: 30px;
 }
 #thumbnails dt a {
     font-weight: 100;
@@ -119,10 +133,9 @@ body:not(.archives) article img {
     color: #999;
 }
 #thumbnails dd {
-    float: left;
-    clear: right;
-    height: 101px;
+    min-height: 101px;
     min-width: 101px;
+    overflow: hidden;
 }
 #thumbnails img {
     outline: none;
@@ -131,6 +144,7 @@ body:not(.archives) article img {
     width: 100px;
     height: 100px;
     background-color: #333;
+    float: left;
 }
 
 header {
@@ -185,13 +199,13 @@ nav {
     display: inline;
 }
 
-ul {
+nav ul {
     display: inline;
     margin: 0;
     padding: 0;
 }
 
-li {
+nav ul li {
     display: inline;
     float: left;
 }
@@ -229,8 +243,8 @@ time {
     display: inline-block;
     margin-left: 20px;
     font-size: 15px;
-    font-weight: 500;
-    color: #ddd;
+    font-weight: 600;
+    color: #efefef;
     line-height: 25px;
     vertical-align: middle;
     position: relative;
@@ -414,9 +428,9 @@ footer li:first-child a {
         padding-top: 10px;
     }
     .tumblr-button {
-        margin-left: 10px;
+        margin-left: 0;
     }
-    h2, time {
+    h2, time, #share {
         float: left;
         margin: 0 0 0 10px;
         line-height: 40px;
@@ -441,12 +455,62 @@ footer li:first-child a {
     footer nav li:first-child a {
         padding-left: 10px;
     }
+    .archives {
+        min-width: 320px;
+    }
     .archives h1 {
         top: 42px;
     }
     .archives h2 {
         position: relative;
-        top: -58px;
+    }
+    #thumbnails {
+        margin-top: 20px;
+    }
+    #thumbnails dt {
+        text-align: left;
+        width: auto;
+        color: #eee;
+        font-size: 24px;
+        position: static;
+        margin: 0 0 15px 0;
+        padding-left: 10px;
+        height: auto;
+        line-height: 20px;
+    }
+    #thumbnails dt a {
+        position: static;
+        font-weight: 100;
+        top: 28px;
+        height: auto;
+        line-height: 30px;
+        display: inline;
+        float: none;
+    }
+    #thumbnails time {
+        position: static;
+        top: 10px;
+        left: 0;
+        font-size: 14px;
+        line-height: 16px;
+        color: #999;
+        display: inline;
+        float: none;
+    }
+    #thumbnails dd {
+        display: none;
+    }
+    .about article {
+        text-align: left;
+        color: #fff;
+        max-width: 320px;
+        line-height: 140%;
+        font-size: 20px;
+        font-weight: 300;
+        margin: 0 0 0 10px;
+    }
+    .about h3 {
+        line-height: 110%;
     }
 }
 

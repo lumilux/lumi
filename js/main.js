@@ -184,11 +184,12 @@ $(function() {
     var path = window.location.pathname.substring(1);
     if(path === 'archives') {
         $('#post dd').lazyload({
-            'threshold': 600,
+            'threshold': 100,
             'onAppear': function(loadOriginalImage) {
                 var $noscript = $(this).find('noscript'),
                     noscript = $noscript[0],
-                    imagesText = noscript.innerText.replace(/src=/g, 'data-original='),
+                    noscriptText = noscript.innerText || noscript.textContent,
+                    imagesText = noscriptText.replace(/src=/g, 'data-original='),
                     $images = $(imagesText);
                 $images.each(function() {
                     var $this = $(this);
@@ -197,7 +198,7 @@ $(function() {
                          .attr('src', '/img/g.gif')
                          .addClass('lazy-image');
                 });
-                $(this).append($images);
+                $noscript.parent().append($images);
                 $noscript.remove();
                 $images.each(loadOriginalImage);
             }
