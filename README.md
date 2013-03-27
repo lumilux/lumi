@@ -29,7 +29,6 @@ lumi
 
 ### todo
 * tweet each post
-* generate atom/rss feed
 * editing and deleting posts in admin
 * post from tumblr
 * large nav click targets for mobile
