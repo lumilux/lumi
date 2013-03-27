@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <atom:link href="http://lumilux.org/rss.xml" rel="self" type="application/rss+xml" />
+  <title>Lumilux, a photoblog</title>
+  <link>http://lumilux.org/</link>
+  <description>A photoblog by Hans E Hyttinen</description>{% for post in posts %}
+  <item>
+    <title>{{ post.title|e }}</title>
+    <link>http://lumilux.org/p/{{ post.slug }}</link>
+    <guid>http://lumilux.org/p/{{ post.slug }}</guid>
+    <pubDate>{{ post.date|date_format(format='%a, %d %b %Y %H:%M:%S GMT') }}</pubDate>
+    <description><![CDATA[{% for photo in post.photos %}
+        <a href="http://lumilux.org/p/{{ post.slug}}"><img src="http://lumilux.org/{{ photo.thumbnail_path }}" /></a><br />
+    {% endfor %}]]></description>
+  </item>{% endfor %}
+</channel>
+</rss>

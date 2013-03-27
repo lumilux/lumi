@@ -42,6 +42,7 @@ img/
 content/
 app/keys.py
 /*.html
+/*.xml
 *.json
 p/
 robots.txt

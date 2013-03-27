@@ -7,6 +7,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block meta %}{% endblock %}
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://lumilux.org/rss.xml">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/main.css">
   </head>
@@ -30,6 +31,7 @@
         <ul>
           <li{{ ' class="current"' if page == 'about' else '' }}><a href="/about">About</a></li>
           <li{{ ' class="current"' if page == 'archives' else '' }}><a href="/archives">Archives</a></li>
+          <li><a href="/rss.xml">RSS</a></li>
         </ul>
       </nav>
       <span id="copyright">&copy; 2005-2013 <a href="https://twitter.com/lumilux">Hans E Hyttinen</a></span>

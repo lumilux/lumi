@@ -17,6 +17,7 @@ POSTS_PATH = rp(ap(join(CWD, '..', 'content/posts.json')))
 INDEX_PATH = rp(ap(join(CWD, '..', 'index.html')))
 ABOUT_PATH = rp(ap(join(CWD, '..', 'about.html')))
 ARCHIVES_PATH = rp(ap(join(CWD, '..', 'archives.html')))
+RSS_PATH = rp(ap(join(CWD, '..', 'rss.xml')))
 TEMPLATES_DIR = rp(ap(join(CWD, 'templates')))
 P_DIR = rp(ap(join(CWD, '../p/')))
 
@@ -115,6 +116,14 @@ def generate():
         f.write(archives_page)
 
     generate_post_pages()
+    generate_rss()
+
+def generate_rss():
+    all_posts = Post.objects.order_by('-date')
+    rss_template = env.get_template('rss.xml')
+    rss_file = rss_template.render(posts=all_posts).encode('utf-8')
+    with open(RSS_PATH, 'w') as f:
+        f.write(rss_file)
 
 def delete_last():
     post = Post.objects.order_by('-date')[0]
