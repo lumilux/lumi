@@ -10,10 +10,12 @@ var Lumi = {
         this.path = path;
         this.posts = posts;
         this.posts.reverse();
+
         _(this.posts).each(function(post, i) {
             post.index = i;
             this.postsBySlug[post.slug] = post;
         }, this);
+
         if(this.path) {
             this.preload(_(this.posts[this.index + 1].photos).pluck('image_path'));
         }
@@ -25,9 +27,11 @@ var Lumi = {
     },
     route: function(path) {
         history.pushState(null, '', '/' + path || '/');
+
         if(path.indexOf('p/') === 0) {
             path = path.substr(2);
         }
+
         this.path = path;
         $('body').removeClass();
         this.bindResize();
@@ -54,6 +58,7 @@ var Lumi = {
         if(this.isMobile) { return; }
         var self = this;
         this.calcViewportDimensions();
+
         var resizeImg = function() {
             var $this = $(this),
                 width = $this.width(),
@@ -64,6 +69,7 @@ var Lumi = {
                 $this.css({'width': '100%'});
             }
         };
+
         $('#post').imagesLoaded().done(function($images) {
             $images.each(resizeImg);
         });
@@ -93,7 +99,9 @@ var Lumi = {
         var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver,
             list = document.querySelector(query),
             observer;
+
         if(!MutationObserver) { return; }
+
         observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if(mutation.addedNodes && mutation.addedNodes.length) {
@@ -106,11 +114,13 @@ var Lumi = {
                 }
             });
         });
+
         observer.observe(list, {
             attributes: true,
             childList: true,
             characterData: true
         });
+
         return observer;
     },
     insertTumblrButton: function() {
@@ -144,12 +154,16 @@ var Lumi = {
             root = 'http://' + window.location.host + '/';
         document.title = post.title + " - Lumilux";
         window.scrollTo(0, 0);
+
         $('meta[name^="twitter"]').remove();
         $post.empty();
+
         if(!this.isMobile) {
             this.imgObserver = this.onAddChildren('#post', this.resize);
         }
+
         if(!this.maxHeight) { this.calcViewportDimensions(); }
+
         _(post.photos).each(function(photo) {
             var style = !this.isMobile ? 'style="width: auto; max-height: ' + this.maxHeight + 'px;"' : '';
             var img = '<img src="/' + photo.image_path + '"' + style + ' />';
@@ -158,6 +172,7 @@ var Lumi = {
             }
             $post.append(img);
         }, this);
+
         $('#title').text(post.title);
         $('#date').show().text(post.date);
         $('#share').attr('data-slug', null);
@@ -171,6 +186,7 @@ var Lumi = {
             $('#prev').show().attr('href', '/p/' + this.posts[this.index + 1].slug);
             this.preload(_(this.posts[this.index + 1].photos).pluck('image_path'));
         }
+
         if(this.index === 0) {
             $('#next').hide();
         } else {
@@ -182,7 +198,8 @@ var Lumi = {
 };
 $(function() {
     var path = window.location.pathname.substring(1);
-    if(path === 'archives') {
+
+    if(path.search('archives') === 0) {
         $('#post dd').lazyload({
             'threshold': 100,
             'onAppear': function(loadOriginalImage) {
@@ -195,7 +212,7 @@ $(function() {
                     var $this = $(this);
                     $this.attr('width', 100)
                          .attr('height', 100)
-                         .attr('src', '/img/g.gif')
+                         .attr('src', 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                          .addClass('lazy-image');
                 });
                 $noscript.parent().append($images);
@@ -205,16 +222,19 @@ $(function() {
         });
         return;
     }
+
     if(path && path.indexOf('p/') === -1) {
         return;
     }
+
     Lumi.resize();
     Lumi.insertTumblrButton();
+
     $.ajax({url: '/content/posts.json', dataType: 'json'})
     .done(function(data) {
         Lumi.init(data, path);
-    })
-    .fail(function() {});
+    });
+
     $(document).on('click', "a[href^='/p']", function(e) {
         if(!e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey
            && (window.location.pathname === '/'
@@ -223,6 +243,7 @@ $(function() {
             Lumi.route($(e.currentTarget).attr("href").replace(/^\//, ""));
         }
     });
+
     $(document).on('keyup', function(e) {
         var isModifier = e.altKey || e.ctrlKey || e.metaKey || e.shiftKey
                          || _([16, 17, 18, 224]).contains(e.which);
