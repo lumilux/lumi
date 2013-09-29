@@ -5,8 +5,14 @@ var Lumi = {
     posts: [],
     postsBySlug: {},
     imageCache: {},
+    CACHE_SIZE: 12,
     init: function(posts, path) {
         _.bindAll(this);
+
+        if(path.indexOf('p/') === 0) {
+            path = path.substr(2);
+        }
+
         this.path = path;
         this.posts = posts;
         this.posts.reverse();
@@ -17,7 +23,11 @@ var Lumi = {
         }, this);
 
         if(this.path) {
-            this.preload(_(this.posts[this.index + 1].photos).pluck('image_path'));
+            this.index = this.postsBySlug[path].index;
+            this.preload(this.posts, this.index + 1);
+            this.preload(this.posts, this.index - 1);
+            this.preload(this.posts, this.index + 2);
+            this.preload(this.posts, this.index - 2);
         }
     },
     bindResize: function() {
@@ -61,38 +71,57 @@ var Lumi = {
 
         var resizeImg = function() {
             var $this = $(this),
-                width = $this.width(),
-                height = $this.height(),
+                width = this['data-width'] || parseInt($this.data('width'), 10),
+                height = this['data-height'] || parseInt($this.data('height'), 10),
                 maxWidth = self.maxHeight * (width / height);
-            $this.css({'max-height': self.maxHeight + 'px', 'max-width': maxWidth + 'px', 'width': ''});
-            if(width > self.viewportWidth) {
-                $this.css({'width': '100%'});
+
+            $this.css({
+                'max-height': self.maxHeight + 'px',
+                'max-width': maxWidth + 'px',
+                'width': ''
+            });
+
+            if(width > height) {
+                if(width > self.viewportWidth) {
+                    $this.css({'width': '100%'});
+                }
+            }
+
+            if(!$this.attr('src')) {
+                $this.attr('src', $this.data('src'));
             }
         };
 
-        $('#post').imagesLoaded().done(function($images) {
-            $images.each(resizeImg);
-        });
+        $('#post img').each(resizeImg);
     },
-    preload: function(images) {
-        var self = this;
-        if(_(images).size() + _(this.imageCache).size() > 8) {
+    preload: function(posts, index) {
+        if(index < 0 || index >= posts.length) { return; }
+        var self = this,
+            images = posts[index].photos
+
+        if(_(images).size() + _(this.imageCache).size() > self.CACHE_SIZE) {
             this.imageCache = {};
         }
-        _(images).each(function(path) {
-            var img = $('<img />')[0];
+
+        _(images).each(function(image) {
+            var path = image.image_path,
+                width = image.width,
+                height = image.height,
+                img = $('<img />')[0];
+            img.setAttribute('data-width', width);
+            img.setAttribute('data-height', height);
+            img['data-width'] = width;
+            img['data-height'] = height;
             img.src = '/' + path;
             this.imageCache[path] = img;
-            $(img).load(_.bind(function() {
-                if(!this.maxHeight) { this.calcViewportDimensions(); }
-                if(!this.isMobile) {
-                    var maxWidth = this.maxHeight * (img.width / img.height);
-                    $(this.imageCache[path]).css({
-                        'max-width': maxWidth + 'px',
-                        'max-height': this.maxHeight + 'px'
-                    });
-                }
-            }, this));
+            if(!this.maxHeight) { this.calcViewportDimensions(); }
+            if(!this.isMobile) {
+                var maxWidth = this.maxHeight * (width / height);
+                $(this.imageCache[path]).css({
+                    'max-width': maxWidth + 'px',
+                    'max-height': this.maxHeight + 'px'
+                });
+            }
         }, this);
     },
     onAddChildren: function(query, func) {
@@ -158,20 +187,27 @@ var Lumi = {
         $('meta[name^="twitter"]').remove();
         $post.empty();
 
+        /*
         if(!this.isMobile) {
             this.imgObserver = this.onAddChildren('#post', this.resize);
         }
+        */
 
         if(!this.maxHeight) { this.calcViewportDimensions(); }
 
         _(post.photos).each(function(photo) {
-            var style = !this.isMobile ? 'style="width: auto; max-height: ' + this.maxHeight + 'px;"' : '';
-            var img = '<img src="/' + photo.image_path + '"' + style + ' />';
+            var img,
+                dataWidth = ' data-width="' + photo.width + '"',
+                dataHeight = ' data-height="' + photo.height + '"',
+                style = !this.isMobile ? ' style="width: auto; max-height: ' + this.maxHeight + 'px;"' : '';
             if(_(this.imageCache).has(photo.image_path)) {
                 img = this.imageCache[photo.image_path];
+            } else {
+                img = '<img src="/' + photo.image_path + '"' + dataWidth + dataHeight + style + ' />';
             }
             $post.append(img);
         }, this);
+        this.resize();
 
         $('#title').text(post.title);
         $('#date').show().text(post.date);
@@ -184,7 +220,8 @@ var Lumi = {
         } else {
             if(!$('#prev').length) { $('header ul').prepend('<li><a id="prev">&#x2190;</a></li>'); }
             $('#prev').show().attr('href', '/p/' + this.posts[this.index + 1].slug);
-            this.preload(_(this.posts[this.index + 1].photos).pluck('image_path'));
+            this.preload(this.posts, this.index + 1);
+            this.preload(this.posts, this.index + 2);
         }
 
         if(this.index === 0) {
@@ -192,7 +229,8 @@ var Lumi = {
         } else {
             if(!$('#next').length) { $('header ul').append('<li><a id="next">&#x2192;</a></li>'); }
             $('#next').show().attr('href', '/p/' + this.posts[this.index - 1].slug);
-            this.preload(_(this.posts[this.index - 1].photos).pluck('image_path'));
+            this.preload(this.posts, this.index - 1);
+            this.preload(this.posts, this.index - 2);
         }
     }
 };

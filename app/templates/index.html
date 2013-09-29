@@ -11,8 +11,13 @@
 
 {% block content %}
   {% for photo in photos %}
-  <img src="/{{ photo.image_path }}" />
+  <img data-src="/{{ photo.image_path }}" data-width="{{ photo.width }}" data-height="{{ photo.height }}" />
   {% endfor %}
+  <noscript>
+    {% for photo in photos %}
+    <img src="/{{ photo.image_path }}" />
+    {% endfor %}
+  </noscript>
 {% endblock %}
 
 {% block post_nav %}
