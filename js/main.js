@@ -1,6 +1,5 @@
 (function() {
 var Lumi = {
-    isMobile: navigator.userAgent.indexOf('iPhone') !== -1,
     index: 0,
     posts: [],
     postsBySlug: {},
@@ -31,9 +30,7 @@ var Lumi = {
         }
     },
     bindResize: function() {
-        if(!this.isMobile) {
-            $(window).resize(this.onResize);
-        }
+        $(window).resize(this.onResize);
     },
     route: function(path) {
         history.pushState(null, '', '/' + path || '/');
@@ -57,7 +54,6 @@ var Lumi = {
         this.scrollbarHideTimeout = window.setTimeout(this.restoreScrollbar, 100);
     }, 50),
     calcViewportDimensions: function() {
-        if(this.isMobile) { return; }
         var viewportHeight = $(window).height(),
             viewportWidth = $(window).width(),
             infoHeight = $('header').height() + $('footer').height() + 22;
@@ -65,7 +61,6 @@ var Lumi = {
         this.viewportWidth = viewportWidth;
     },
     resize: function() {
-        if(this.isMobile) { return; }
         var self = this;
         this.calcViewportDimensions();
 
@@ -115,13 +110,11 @@ var Lumi = {
             img.src = '/' + path;
             this.imageCache[path] = img;
             if(!this.maxHeight) { this.calcViewportDimensions(); }
-            if(!this.isMobile) {
-                var maxWidth = this.maxHeight * (width / height);
-                $(this.imageCache[path]).css({
-                    'max-width': maxWidth + 'px',
-                    'max-height': this.maxHeight + 'px'
-                });
-            }
+            var maxWidth = this.maxHeight * (width / height);
+            $(this.imageCache[path]).css({
+                'max-width': maxWidth + 'px',
+                'max-height': this.maxHeight + 'px'
+            });
         }, this);
     },
     onAddChildren: function(query, func) {
@@ -187,19 +180,13 @@ var Lumi = {
         $('meta[name^="twitter"]').remove();
         $post.empty();
 
-        /*
-        if(!this.isMobile) {
-            this.imgObserver = this.onAddChildren('#post', this.resize);
-        }
-        */
-
         if(!this.maxHeight) { this.calcViewportDimensions(); }
 
         _(post.photos).each(function(photo) {
             var img,
                 dataWidth = ' data-width="' + photo.width + '"',
                 dataHeight = ' data-height="' + photo.height + '"',
-                style = !this.isMobile ? ' style="width: auto; max-height: ' + this.maxHeight + 'px;"' : '';
+                style = ' style="width: auto; max-height: ' + this.maxHeight + 'px;"';
             if(_(this.imageCache).has(photo.image_path)) {
                 img = this.imageCache[photo.image_path];
             } else {
