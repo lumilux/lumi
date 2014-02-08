@@ -32,8 +32,10 @@ var Lumi = {
     bindResize: function() {
         $(window).resize(this.onResize);
     },
-    route: function(path) {
-        history.pushState(null, '', '/' + path || '/');
+    route: function(path, pushState) {
+        if(pushState) {
+            history.pushState({lumi: true}, '', '/' + path || '/');
+        }
 
         if(path.indexOf('p/') === 0) {
             path = path.substr(2);
@@ -258,6 +260,7 @@ $(function() {
     $.ajax({url: '/content/posts.json', dataType: 'json'})
     .done(function(data) {
         Lumi.init(data, path);
+        history.replaceState({lumi: true});
     });
 
     $(document).on('click', "a[href^='/p']", function(e) {
@@ -265,7 +268,7 @@ $(function() {
            && (window.location.pathname === '/'
                || window.location.pathname.indexOf('/p/') === 0)) {
             e.preventDefault();
-            Lumi.route($(e.currentTarget).attr("href").replace(/^\//, ""));
+            Lumi.route($(e.currentTarget).attr("href").replace(/^\//, ""), true);
         }
     });
 
@@ -279,6 +282,11 @@ $(function() {
             // right arrow key by itself
             if($('#next').is(':visible')) { $('#next').click(); }
         }
+    });
+
+    $(window).on('popstate', function(e) {
+        if(!e.originalEvent.state || !e.originalEvent.state.lumi) return;
+        Lumi.route(document.location.pathname.substring(1), false);
     });
 });
 }());
