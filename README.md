@@ -2,7 +2,7 @@ lumi
 ====
 ### backend dependencies
 * nginx
-* cherrypy
+* web.py
 * mongoengine
 * pymongo
 * mongodb
